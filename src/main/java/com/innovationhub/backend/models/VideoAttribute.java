@@ -1,5 +1,6 @@
 package com.innovationhub.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class VideoAttribute {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ElementCollection
@@ -22,7 +24,10 @@ public class VideoAttribute {
 
     private String videoUrl;
 
+    private String videoName;
+
     @ManyToOne
-    @JoinColumn(name = "content_portfolio_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "portfolio_id")
     private ContentPortfolio contentPortfolio;
 }
