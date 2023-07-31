@@ -71,9 +71,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
 
-        /*http.authorizeRequests().antMatchers("/api/user/preference", "/api/user/currentuser").hasRole("USER");
-
-        http.authorizeRequests().anyRequest().hasRole("ADMIN");*/
+        http.authorizeRequests().anyRequest().authenticated();
 
         http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()

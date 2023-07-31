@@ -7,11 +7,8 @@ import com.innovationhub.backend.models.User;
 import com.innovationhub.backend.repositories.UserRepository;
 import com.innovationhub.backend.utils.JwtTokenUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -36,17 +33,17 @@ public class UserService {
     }
 
     public void saveUser(User user) {
-        if (usernameExist(user)) {
+        if (usernameExist(user.getUsername())) {
             throw new AccountInfoConflictException("Username already exist");
-        } else if (emailExist(user)) {
+        } else if (emailExist(user.getEmail())) {
             throw new AccountInfoConflictException("Email already been used");
         }
         userRepository.save(user);
     }
-    public boolean usernameExist(User user) {
-        return userRepository.findUserByUsername(user.getUsername()).isPresent();
+    public boolean usernameExist(String username) {
+        return userRepository.findUserByUsername(username).isPresent();
     }
-    public boolean emailExist(User user) {
-        return userRepository.findUserByEmail(user.getEmail()).isPresent();
+    public boolean emailExist(String email) {
+        return userRepository.findUserByEmail(email).isPresent();
     }
 }

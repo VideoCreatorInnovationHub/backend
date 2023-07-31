@@ -1,5 +1,6 @@
 package com.innovationhub.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +17,15 @@ import java.util.List;
 public class ContentPortfolio {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "contentPortfolio", cascade = CascadeType.ALL)
     List<VideoAttribute> videos;
 }
