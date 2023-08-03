@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -45,5 +47,11 @@ public class UserService {
     }
     public boolean emailExist(String email) {
         return userRepository.findUserByEmail(email).isPresent();
+    }
+    public User getUser(String username) throws AccountNotFoundException {
+        if (!usernameExist(username)) {
+            throw new AccountNotFoundException(String.format("Account with username %s does not exist", username));
+        }
+        return userRepository.findUserByUsername(username).get();
     }
 }

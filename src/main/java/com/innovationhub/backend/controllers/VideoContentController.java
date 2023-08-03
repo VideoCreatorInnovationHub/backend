@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/content")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @Tag(name = "Video Content", description = "The Video Content API. " +
         "Contains all the operations that can be performed on video content of a user.")
 public class VideoContentController {
@@ -31,7 +32,7 @@ public class VideoContentController {
                 description = "Files to be uploaded",
                 content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
-            @RequestPart(value = "files") MultipartFile video, Authentication authentication) throws AccountNotFoundException {
+            @RequestPart(value = "video") MultipartFile video, Authentication authentication) throws AccountNotFoundException {
         videoContentService.processVideo(video, authentication.getName());
         return ResponseEntity.ok("Your uploaded video is being processed");
     }

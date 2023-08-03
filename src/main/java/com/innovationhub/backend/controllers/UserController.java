@@ -3,7 +3,6 @@ package com.innovationhub.backend.controllers;
 import com.innovationhub.backend.dto.JwtRequest;
 import com.innovationhub.backend.dto.JwtResponse;
 import com.innovationhub.backend.models.User;
-import com.innovationhub.backend.repositories.UserRepository;
 import com.innovationhub.backend.services.UserService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -13,16 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 
 @Log4j2
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/auth")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @OpenAPIDefinition(info = @Info(title = "User API", version = "1.0", description = "Web server for user authentication"))
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody @Valid User user) {
@@ -36,9 +36,8 @@ public class UserController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @DeleteMapping()
-    public void delete(Authentication authentication) {
-        User tmp = userRepository.findUserByUsername(authentication.getName()).get();
-        userRepository.deleteById(tmp.getId());
+    @GetMapping("/user_info")
+    public ResponseEntity<User> login(Authentication authentication) throws AccountNotFoundException {
+        return ResponseEntity.ok(userService.getUser(authentication.getName()));
     }
 }
