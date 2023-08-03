@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import com.innovationhub.backend.exception.InvalidTokenException;
 import com.innovationhub.backend.services.JwtUserDetailsService;
 import com.innovationhub.backend.utils.JwtTokenUtil;
 import io.jsonwebtoken.MalformedJwtException;
@@ -59,7 +60,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 logger.warn("JWT Token has expired");
             } catch(SignatureException e) {
-                logger.error("Authentication Failed. Username or Password not valid.");
+                logger.error("Authentication Failed. Invalid Token");
+                throw new InvalidTokenException("You have Invalid Token");
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");

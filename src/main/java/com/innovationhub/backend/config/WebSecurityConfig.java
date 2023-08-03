@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -85,5 +88,21 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers(AUTH_WHITELIST);
     }
+
+    /*@Bean
+    public WebMvcConfigurer corsConfigurer()
+    {
+        String[] allowDomains = new String[2];
+        allowDomains[0] = "http://localhost:4200";
+        allowDomains[1] = "http://localhost:8080";
+
+        System.out.println("CORS configuration....");
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins(allowDomains);
+            }
+        };
+    }*/
 
 }

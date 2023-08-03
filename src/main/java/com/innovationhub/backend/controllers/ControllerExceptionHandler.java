@@ -1,9 +1,6 @@
 package com.innovationhub.backend.controllers;
 
-import com.innovationhub.backend.exception.AccountInfoConflictException;
-import com.innovationhub.backend.exception.AuthenticationException;
-import com.innovationhub.backend.exception.ResourceNotFoundException;
-import com.innovationhub.backend.exception.VideoProcessException;
+import com.innovationhub.backend.exception.*;
 import com.innovationhub.backend.models.HttpErrorResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -90,6 +87,17 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(value = ResourceNotFoundException.class)
     protected HttpErrorResponse handleResourceNotFoundException(Exception ex) {
         ResourceNotFoundException e = (ResourceNotFoundException) ex;
+        return HttpErrorResponse.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .error(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = InvalidTokenException.class)
+    protected HttpErrorResponse handleInvalidTokenException(Exception ex) {
+        InvalidTokenException e = (InvalidTokenException) ex;
         return HttpErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
                 .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
