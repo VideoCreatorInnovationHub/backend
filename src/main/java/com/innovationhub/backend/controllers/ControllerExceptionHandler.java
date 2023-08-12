@@ -3,12 +3,14 @@ package com.innovationhub.backend.controllers;
 import com.innovationhub.backend.exception.*;
 import com.innovationhub.backend.models.HttpErrorResponse;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -102,6 +104,17 @@ public class ControllerExceptionHandler {
                 .code(HttpStatus.BAD_REQUEST.value())
                 .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .error(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MaxUploadSizeExceededException.class)
+    protected HttpErrorResponse handleFileSizeLimitExceededException(Exception ex) {
+        MaxUploadSizeExceededException e = (MaxUploadSizeExceededException) ex;
+        return HttpErrorResponse.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .error("File size cannot exceed 50MB")
                 .build();
     }
 }
