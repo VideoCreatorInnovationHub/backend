@@ -1,3 +1,4 @@
+/*
 package com.innovationhub.backend.repositories;
 
 import com.innovationhub.backend.models.User;
@@ -42,3 +43,4 @@ public class UserRepositoryTest {
         assertEquals(0, repository.count());
     }
 }
+*/

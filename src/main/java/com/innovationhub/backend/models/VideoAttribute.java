@@ -19,8 +19,9 @@ public class VideoAttribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ElementCollection
-    private List<String> bestFrames;
+//    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String bestFrames;
 
     private String videoUrl;
 

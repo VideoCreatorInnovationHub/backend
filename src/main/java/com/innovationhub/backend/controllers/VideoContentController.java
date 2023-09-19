@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class VideoContentController {
                 description = "Files to be uploaded",
                 content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
             )
-            @RequestPart(value = "video") MultipartFile video, Authentication authentication) throws AccountNotFoundException {
+            @RequestPart(value = "video") MultipartFile video, Authentication authentication) throws AccountNotFoundException, IOException {
         videoContentService.processVideo(video, authentication.getName());
         return ResponseEntity.ok("Your uploaded video is being processed");
     }
