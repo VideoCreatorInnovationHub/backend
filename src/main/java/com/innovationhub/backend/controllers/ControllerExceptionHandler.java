@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -106,6 +107,16 @@ public class ControllerExceptionHandler {
                 .error(e.getMessage())
                 .build();
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = AccountNotFoundException.class)
+    protected HttpErrorResponse handleAccountNotFoundException(Exception ex) {
+        AccountNotFoundException e = (AccountNotFoundException) ex;
+        return HttpErrorResponse.builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .error(e.getMessage())
+                .build();
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MaxUploadSizeExceededException.class)
@@ -114,7 +125,7 @@ public class ControllerExceptionHandler {
         return HttpErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())
                 .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .error("File size cannot exceed 50MB")
+                .error("File size cannot exceed 500MB")
                 .build();
     }
 }

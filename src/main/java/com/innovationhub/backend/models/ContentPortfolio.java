@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,5 +28,6 @@ public class ContentPortfolio {
     private User user;
 
     @OneToMany(mappedBy = "contentPortfolio", cascade = CascadeType.ALL)
-    List<VideoAttribute> videos;
+    @Builder.Default
+    List<VideoAttribute> videos = new ArrayList<>();
 }
